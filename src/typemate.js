@@ -10,12 +10,15 @@ class TypeMate {
     constructor(parent, settings = {}) {
         let self = this;
 
+        self.switchableHtml = '<span class="tm-nbsp">&nbsp;</span><span class="tm-sp"> </span>';
+
         // Set some settings, by merging defaults and passed settings
         self.settings = Object.assign({
             minWords: 4,
             selector: 'p',
             ignoreClass: 'js-typemate__ignore',
-            ignoreExistingSpaceChars: false 
+            ignoreExistingSpaceChars: false,
+            cssSwitchable: false,
         }, settings);
 
         // Either load from root or the passed parent element
@@ -36,7 +39,7 @@ class TypeMate {
 
         self.elems.map(elem => {
 
-            // Bail out if the ignore class is present on this element  
+            // Bail out if the ignore class is present on this element
             if(elem.classList.contains(self.settings.ignoreClass)) { 
                 return false;
             }
@@ -63,8 +66,21 @@ class TypeMate {
             // Join the words back together
             result = textItems.join(' ');
 
+            // TODO: Write test for new feature
             // Replace whitespace after no break spaces
-            result = result.replace(/&nbsp; /g, '&nbsp;');
+            let searchString;
+            let replace;
+            if (this.settings.cssSwitchable) {
+                searchString = this.switchableHtml + ' ';
+                replace = this.switchableHtml;
+            } else {
+                searchString = '&nbsp; ';
+                replace = '&nbsp;';
+            }
+
+            const search = new RegExp(searchString, 'g');
+
+            result = result.replace(search, replace);
             
             // Set the content of the element with our shiny string
             elem.innerHTML = result;
@@ -80,9 +96,14 @@ class TypeMate {
         // Find the second to last work
         var targetWord = textItems[(textItems.length - 2)];
 
+        let replacementString = targetWord + '&nbsp;';
+        if (this.settings.cssSwitchable) {
+            replacementString = targetWord + this.switchableHtml;
+        }
+
         // Stick a no break space to the end of the word and replace the instance in the array
-        textItems[(textItems.length - 2)] = targetWord + '&nbsp;';
-        
+        textItems[(textItems.length - 2)] = replacementString;
+
         return textItems;
     }
     

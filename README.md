@@ -61,12 +61,20 @@ That settings object now allows `<h2>` elements within `article#content` to be p
 
 ### Settings reference
 
-| Property      | Type   | Description                              | Default Value                       |
-| ------------- | ------ | ---------------------------------------- | ----------------------------------- |
-| `minWords`    | Number | The minimum amount of words that have to be present in an element's content before TypeMate will process it | 4                                   |
-| `selector`    | String | The selector string that's passed to `querySelectorAll` | 'p'                                 |
-| `ignoreClass` | String | The CSS class that can be added to an element to mark itself as ignorable to TypeMate | 'js&#8288;-&#8288;typemate__ignore' |
-| `ignoreExistingSpaceChars`    | Boolean | Determine if elements should be ignored if they already contain an `&nbsp;` character | false                                 |
+| Property                   | Type    | Description                                                                                                                                         | Default Value                       |
+|----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| `minWords`                 | Number  | The minimum amount of words that have to be present in an element's content before TypeMate will process it                                         | 4                                   |
+| `selector`                 | String  | The selector string that's passed to `querySelectorAll`                                                                                             | 'p'                                 |
+| `ignoreClass`              | String  | The CSS class that can be added to an element to mark itself as ignorable to TypeMate                                                               | 'js&#8288;-&#8288;typemate__ignore' |
+| `ignoreExistingSpaceChars` | Boolean | Determine if elements should be ignored if they already contain an `&nbsp;` character                                                               | false                               |
+ | `cssSwitchable`            | Boolean | Determines if a basic `&nbsp;` character should be used or interchangable HTML elements with non-breaking and breaking spaces to customise with CSS | false                               |
+
+## CSS Switchable Output
+
+When the `cssSwitchable` option is enabled, the final space in an element will be replaced with the following:
+```html
+<span class="tm-nbsp">&amp;nbsp;</span><span class="tm-sp"> </span>
+```
 
 ## Codepen example
 
